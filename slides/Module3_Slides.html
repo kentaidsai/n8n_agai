@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>用 n8n 實現 Agentic AI System — Module 3：MCP Server/Client 整合實作（2 小時）｜RWD 投影片播放</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#0D0D0F; --coral:#FF6D5A; --pink:#EA4B71; --purple:#634DFF; --lp:#D9C7E8;
+  --text-dark:#161616; --text-muted:#5B5A63; --stage-bg:#15151a;
+}
+*{box-sizing:border-box;}
+html,body{
+  margin:0; padding:0; height:100%; overflow:hidden;
+  background:var(--stage-bg);
+  font-family:'IBM Plex Sans', Arial, sans-serif; color:#FAFAF9;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--coral);}
+select{font-family:'JetBrains Mono', Consolas, monospace;}
+
+.topbar{
+  position:fixed; top:0; left:0; right:0; height:52px; z-index:80;
+  background:linear-gradient(160deg, var(--dark) 0%, #1a1030 100%);
+  display:flex; align-items:center; gap:12px; padding:0 14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.35);
+}
+.topbar .back{
+  font-family:'JetBrains Mono', Consolas, monospace; font-size:12px; color:var(--lp);
+  text-decoration:none; border:1px solid var(--lp); border-radius:100px; padding:6px 14px;
+  white-space:nowrap; flex:none;
+}
+.topbar .back:hover{background:rgba(217,199,232,.15);}
+.topbar .title{
+  font-size:13px; font-weight:600; color:#FAFAF9; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; flex:1 1 auto; min-width:0;
+}
+.topbar .selects{display:flex; gap:8px; flex:none;}
+.topbar select{
+  font-size:11px; background:#1c1c22; color:var(--lp); border:1px solid #3a3a44;
+  border-radius:8px; padding:6px 8px; max-width:34vw;
+}
+
+.stage{
+  position:absolute; top:52px; left:0; right:0; bottom:58px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; background:var(--stage-bg);
+  touch-action:pan-y;
+}
+#canvas{
+  width:1920px; height:1080px; flex:none; position:relative;
+  transform-origin:center center;
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.55);
+  background:#fff;
+}
+.slide{position:absolute; inset:0; width:1920px; height:1080px; display:none;}
+.slide.active{display:block;}
+.slide > section{width:1920px !important; height:1080px !important; margin:0 !important; box-sizing:border-box;}
+
+.clickzone{position:absolute; top:0; bottom:0; width:18%; z-index:5; cursor:pointer; background:transparent;}
+.clickzone.left{left:0;}
+.clickzone.right{right:0;}
+.clickzone .arrow{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:38px; height:38px; border-radius:50%; background:rgba(0,0,0,.28);
+  color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px;
+  opacity:0; transition:opacity .15s;
+}
+.clickzone.left .arrow{left:10px;}
+.clickzone.right .arrow{right:10px;}
+.clickzone:hover .arrow{opacity:1;}
+
+.bottombar{
+  position:fixed; left:0; right:0; bottom:0; height:58px; z-index:80;
+  background:linear-gradient(0deg, var(--dark) 0%, #1a1030 100%);
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  box-shadow:0 -2px 10px rgba(0,0,0,.35);
+}
+.progress{position:absolute; top:0; left:0; height:3px; background:var(--coral); transition:width .25s;}
+.ctrl-btn{
+  background:#1c1c22; color:#FAFAF9; border:1px solid #3a3a44; border-radius:10px;
+  width:40px; height:38px; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.ctrl-btn:hover{border-color:var(--coral); color:var(--coral);}
+.ctrl-btn:disabled{opacity:.35; cursor:default;}
+.ctrl-btn:disabled:hover{border-color:#3a3a44; color:#FAFAF9;}
+.counter{
+  font-family:'JetBrains Mono', Consolas, monospace; font-size:13px; color:var(--lp);
+  min-width:64px; text-align:center; user-select:none;
+}
+.fs-btn{margin-left:6px;}
+
+@media (max-width:640px){
+  .topbar{gap:8px; padding:0 10px;}
+  .topbar .title{display:none;}
+  .topbar select{max-width:40vw; font-size:10px;}
+  .clickzone .arrow{width:30px; height:30px; font-size:13px;}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">← 索引</a>
+  <div class="title">用 n8n 實現 Agentic AI System — Module 3：MCP Server/Client 整合實作（2 小時）</div>
+  <div class="selects">
+    <select id="jump-select" title="跳到指定投影片">
+      <option value="0">1. MCP Server/Client 整合</option><option value="1">2. MCP：標準化的工具協定</option><option value="2">3. MCP vs 直接呼叫 API（HTTP Request T…</option><option value="3">4. 範例 MCP Server 提供的工具清單</option><option value="4">5. 串接 MCP Server 並成功呼叫工具</option>
+    </select>
+    <select id="chapter-select" title="切換章節" onchange="if(this.value) location.href=this.value;">
+      <option value="Module1_Slides.html">Module 1 獨立版</option><option value="Module2_Slides.html">Module 2 獨立版</option><option value="Module3_Slides.html" selected>Module 3 獨立版</option><option value="Module4_Slides.html">Module 4 獨立版</option><option value="Module5_Slides.html">Module 5 獨立版</option><option value="Module6_Slides.html">Module 6 獨立版</option><option value="Module7_Slides.html">Module 7 獨立版</option>
+    </select>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+  <div class="clickzone left" id="zone-left"><span class="arrow">◀</span></div>
+  <div class="clickzone right" id="zone-right"><span class="arrow">▶</span></div>
+  <div id="canvas">
+    <div class="slide" id="m3-title"><section data-transition="fade" id="m3-title" style="background:#0D0D0F; color:#FAFAF9; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF9585; text-transform:uppercase; letter-spacing:2px">Module 3 · 2 小時</p>
+<h1 style="font-size:84px; font-weight:700; line-height:1.15; color:#FAFAF9">MCP Server/Client<br/>整合</h1>
+<p style="font-size:28px; color:#D9C7E8; max-width:1300px">讓工具跨 Agent、跨專案重複使用</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8; text-align:right">1/5</p>
+</section></div><div class="slide" id="m3-content"><section id="m3-content" style="background:#FAFAF9; color:#161616; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px; ">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF6D5A; text-transform:uppercase; letter-spacing:2px">Module 3</p>
+<h2 style="font-size:52px; font-weight:700">MCP：標準化的工具協定</h2>
+<p style="font-size:23px; color:#5B5A63; max-width:1500px; line-height:1.5">與傳統 Tool/Function Calling 不同，MCP 讓同一套工具可被多個 Agent、多個專案共用，不需重複開發串接邏輯。</p>
+<div style="display:flex; align-items:center; gap:14px"><div style="flex:1; text-align:center; padding:20px 16px; border-radius:12px; background:#FAFAF9; border:1px solid #EAE6E4;"><p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; font-weight:600; color:#161616">n8n AI Agent</p></div><x-shape kind="arrow-right" style="background:#FF6D5A; width:48px; height:22px"></x-shape><div style="flex:1; text-align:center; padding:20px 16px; border-radius:12px; background:#FAFAF9; border:1px solid #EAE6E4;"><p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; font-weight:600; color:#161616">MCP Client Tool</p></div><x-shape kind="arrow-right" style="background:#FF6D5A; width:48px; height:22px"></x-shape><div style="flex:1; text-align:center; padding:20px 16px; border-radius:12px; background:#0D0D0F; "><p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; font-weight:600; color:#FAFAF9">MCP Server</p></div><x-shape kind="arrow-right" style="background:#FF6D5A; width:48px; height:22px"></x-shape><div style="flex:1; text-align:center; padding:20px 16px; border-radius:12px; background:#FAFAF9; border:1px solid #EAE6E4;"><p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; font-weight:600; color:#161616">訂單／庫存查詢工具</p></div></div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92; text-align:right">2/5</p>
+</section></div><div class="slide" id="m3-vs-tool"><section id="m3-vs-tool" style="background:#FAFAF9; color:#161616; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px; ">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF6D5A; text-transform:uppercase; letter-spacing:2px">Module 3</p>
+<h2 style="font-size:52px; font-weight:700">MCP vs 直接呼叫 API（HTTP Request Tool）</h2>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif; width:100%"><tr><th style="width:20%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">面向</th><th style="width:40%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">直接呼叫 API</th><th style="width:40%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">透過 MCP</th></tr><tr><td style="width:20%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">開發方式</td><td style="width:40%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">每個 Agent 各自設定串接邏輯</td><td style="width:40%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">工具集中定義在 MCP Server，一次設定多處共用</td></tr><tr><td style="width:20%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">維護成本</td><td style="width:40%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">API 改版需逐一更新每個 Agent</td><td style="width:40%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">只需更新 MCP Server 一處</td></tr><tr><td style="width:20%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">適用情境</td><td style="width:40%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">單一專案、工具數量少</td><td style="width:40%; padding:18px 14px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:21px; color:#161616; border-bottom:1px solid #EAE6E4">多專案、多 Agent 共用同一組工具</td></tr></table>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92; text-align:right">3/5</p>
+</section></div><div class="slide" id="m3-server-tools"><section id="m3-server-tools" style="background:#FAFAF9; color:#161616; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px; ">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF6D5A; text-transform:uppercase; letter-spacing:2px">Module 3</p>
+<h2 style="font-size:52px; font-weight:700">範例 MCP Server 提供的工具清單</h2>
+<table style="font-family:'IBM Plex Sans', Arial, sans-serif; width:100%"><tr><th style="width:30%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">工具名稱</th><th style="width:70%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">說明</th></tr><tr><td style="width:30%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">get_order_status</td><td style="width:70%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">查詢訂單狀態與預計到貨日</td></tr><tr><td style="width:30%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">get_inventory</td><td style="width:70%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">查詢庫存數量與到貨時間</td></tr><tr><td style="width:30%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">search_faq</td><td style="width:70%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">檢索客服知識庫常見問題</td></tr></table><p style="font-size:20px; color:#5B5A63; margin-top:8px">對應資料檔：<b>data/mcp_server_tools.json</b>（工具定義與模擬回應）</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92; text-align:right">4/5</p>
+</section></div><div class="slide" id="m3-lab"><section id="m3-lab" style="background:#1B1030; color:#FAFAF9; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF9585; text-transform:uppercase; letter-spacing:2px">Module 3 · 動手練習 LAB</p>
+<h2 style="font-size:50px; font-weight:700; color:#FAFAF9">串接 MCP Server 並成功呼叫工具</h2>
+<div style="display:flex; flex-direction:column; gap:20px; margin-top:4px">
+<div style="display:flex; gap:22px; align-items:flex-start">
+<div style="width:52px; height:52px; min-width:52px; border-radius:26px; background:#FF9585; display:flex; align-items:center; justify-content:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:600; color:#1B1030">1</p>
+</div>
+<p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#FAFAF9; line-height:1.4; padding-top:8px">在 n8n 中設定 MCP Client Tool 節點，連接練習用 MCP Server</p>
+</div>
+<div style="display:flex; gap:22px; align-items:flex-start">
+<div style="width:52px; height:52px; min-width:52px; border-radius:26px; background:#FF9585; display:flex; align-items:center; justify-content:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:600; color:#1B1030">2</p>
+</div>
+<p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#FAFAF9; line-height:1.4; padding-top:8px">掛載到 Module 2 的 Agent 上，與既有 HTTP Request Tool 並存</p>
+</div>
+<div style="display:flex; gap:22px; align-items:flex-start">
+<div style="width:52px; height:52px; min-width:52px; border-radius:26px; background:#FF9585; display:flex; align-items:center; justify-content:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:600; color:#1B1030">3</p>
+</div>
+<p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#FAFAF9; line-height:1.4; padding-top:8px">測試：讓 Agent 透過 MCP 呼叫 get_inventory，查詢「SKU-2001」的庫存</p>
+</div>
+<div style="display:flex; gap:22px; align-items:flex-start">
+<div style="width:52px; height:52px; min-width:52px; border-radius:26px; background:#FF9585; display:flex; align-items:center; justify-content:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:600; color:#1B1030">4</p>
+</div>
+<p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#FAFAF9; line-height:1.4; padding-top:8px">比較直接呼叫 API 與透過 MCP 呼叫的差異，寫下 1 個你觀察到的優點</p>
+</div>
+</div>
+<p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#FF9585; margin-top:8px">所需資料：data/mcp_server_tools.json</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8; text-align:right">5/5</p>
+</section></div>
+  </div>
+</div>
+
+<div class="bottombar">
+  <div class="progress" id="progress"></div>
+  <button class="ctrl-btn" id="prev-btn" title="上一頁 (←)">◀</button>
+  <span class="counter" id="counter">1 / 5</span>
+  <button class="ctrl-btn" id="next-btn" title="下一頁 (→)">▶</button>
+  <button class="ctrl-btn fs-btn" id="fs-btn" title="全螢幕 (F)">⛶</button>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var idx = 0;
+  var canvas = document.getElementById('canvas');
+  var stage = document.getElementById('stage');
+  var counterEl = document.getElementById('counter');
+  var progressEl = document.getElementById('progress');
+  var jumpSelect = document.getElementById('jump-select');
+  var prevBtn = document.getElementById('prev-btn');
+  var nextBtn = document.getElementById('next-btn');
+  var fsBtn = document.getElementById('fs-btn');
+
+  function idFromIndex(i){ return slides[i].id; }
+
+  function applyScale(){
+    var availW = stage.clientWidth - 24;
+    var availH = stage.clientHeight - 24;
+    var scale = Math.min(availW / 1920, availH / 1080);
+    if(!isFinite(scale) || scale <= 0) scale = 0.1;
+    canvas.style.transform = 'scale(' + scale + ')';
+  }
+
+  function render(){
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === idx); });
+    counterEl.textContent = (idx + 1) + ' / ' + total;
+    progressEl.style.width = (((idx + 1) / total) * 100) + '%';
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    if(jumpSelect) jumpSelect.value = String(idx);
+    try { history.replaceState(null, '', '#' + idFromIndex(idx)); } catch(e){}
+    applyScale();
+  }
+
+  function goTo(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  function next(){ if(idx < total - 1) goTo(idx + 1); }
+  function prev(){ if(idx > 0) goTo(idx - 1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  document.getElementById('zone-left').addEventListener('click', prev);
+  document.getElementById('zone-right').addEventListener('click', next);
+  if(jumpSelect){
+    jumpSelect.addEventListener('change', function(){ goTo(parseInt(jumpSelect.value, 10)); });
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); next(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key === ' '){ e.preventDefault(); if(e.shiftKey) prev(); else next(); }
+    else if(e.key === 'Home'){ e.preventDefault(); goTo(0); }
+    else if(e.key === 'End'){ e.preventDefault(); goTo(total - 1); }
+    else if(e.key === 'f' || e.key === 'F'){ toggleFullscreen(); }
+  });
+
+  var touchStartX = null;
+  stage.addEventListener('touchstart', function(e){ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
+  stage.addEventListener('touchend', function(e){
+    if(touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 50){ if(dx < 0) next(); else prev(); }
+    touchStartX = null;
+  }, {passive:true});
+
+  function toggleFullscreen(){
+    if(!document.fullscreenElement){
+      (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || function(){}).call(document.documentElement);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || function(){}).call(document);
+    }
+  }
+  fsBtn.addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', function(){
+    fsBtn.textContent = document.fullscreenElement ? '⤡' : '⛶';
+    setTimeout(applyScale, 60);
+  });
+
+  window.addEventListener('resize', applyScale);
+  window.addEventListener('orientationchange', function(){ setTimeout(applyScale, 120); });
+
+  var startHash = (location.hash || '').replace('#', '');
+  var startIdx = startHash ? slides.findIndex(function(s){ return s.id === startHash; }) : 0;
+  idx = startIdx >= 0 ? startIdx : 0;
+  render();
+})();
+</script>
+</body>
+</html>

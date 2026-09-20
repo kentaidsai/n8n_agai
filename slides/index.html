@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用 n8n 實現 Agentic AI System｜RWD 投影片索引</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#0D0D0F; --dark2:#1a1030; --coral:#FF6D5A; --pink:#EA4B71; --purple:#634DFF;
+    --lp:#D9C7E8; --text-dark:#161616; --text-muted:#5B5A63; --light-bg:#FAFAF9;
+    --card-bg:#FFFFFF; --card-border:#E3E0E6; --radius:16px; --max-w:1080px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--light-bg); color:var(--text-dark);
+    font-family:'IBM Plex Sans', Arial, sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono', Consolas, monospace;}
+  a{color:var(--coral);}
+  .wrap{max-width:var(--max-w); margin:0 auto; padding:0 24px;}
+
+  header.hero{
+    background:linear-gradient(160deg, var(--dark) 0%, var(--dark2) 100%);
+    color:#FAFAF9; padding:64px 0 48px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', Consolas, monospace; font-size:13px; letter-spacing:2px;
+    text-transform:uppercase; color:#FF9585; margin:0 0 16px;
+  }
+  header.hero h1{font-size:clamp(28px,5vw,44px); line-height:1.2; margin:0 0 14px; font-weight:700;}
+  header.hero p.subtitle{font-size:clamp(14px,2vw,17px); color:var(--lp); max-width:680px; margin:0;}
+
+  section{padding:44px 0;}
+  h2.section-title{font-size:clamp(20px,3.2vw,26px); margin:0 0 8px; font-weight:700;}
+  p.section-lead{color:var(--text-muted); max-width:720px; margin:0 0 28px; font-size:15px;}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media (max-width:700px){ .grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius);
+    padding:22px 24px; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:8px;
+  }
+  .card:hover{border-color:var(--coral); box-shadow:0 4px 16px rgba(0,0,0,.06);}
+  .card .m-id{
+    font-family:'JetBrains Mono', Consolas, monospace; font-size:12px; color:var(--coral);
+    font-weight:600; text-transform:uppercase; letter-spacing:1px;
+  }
+  .card h3{margin:0; font-size:16px; font-weight:700; color:var(--text-dark); line-height:1.4;}
+  .card .meta{font-size:12px; color:var(--text-muted); font-family:'JetBrains Mono', Consolas, monospace;}
+
+  .note{
+    background:#FFF1EE; border:1px solid #FFC9BE; border-radius:12px; padding:16px 20px;
+    font-size:13.5px; color:#8A3020; margin-top:20px;
+  }
+  .note b{color:#6a2013;}
+  .note ul{margin:8px 0 0; padding-left:20px;}
+  .note li{margin-bottom:4px;}
+
+  footer{padding:36px 0 56px; text-align:center; color:var(--text-muted); font-size:13px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Agentic AI Workshop · RWD Slides</p>
+    <h1>用 n8n 實現 Agentic AI System<br>投影片・響應式網頁播放版索引</h1>
+    <p class="subtitle">7 份依模組拆分的投影片已轉為響應式（RWD）HTML 播放頁，內容與 Slides Artifact／PowerPoint 本機版完全相同，可直接在手機、平板、桌機瀏覽器開啟，以投影片播放方式呈現（上一頁／下一頁／全螢幕），不需安裝任何軟體。點選下方連結會在新視窗／分頁開啟。</p>
+  </div>
+</header>
+
+<section id="modules">
+  <div class="wrap">
+    <h2 class="section-title">依模組拆分版</h2>
+    <p class="section-lead">7 份獨立網頁，各自對應一個模組，方便單獨授課、複習或分享單一章節內容。</p>
+    <div class="grid">
+      <a class="card" href="Module1_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 1 · 1.5h</span>
+        <h3>從聊天工具到 Agentic AI：n8n Agent 架構總覽</h3>
+        <span class="meta">5 slides</span>
+      </a>
+      <a class="card" href="Module2_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 2 · 3h</span>
+        <h3>Single Agent 實作：Tool Invocation 與 Memory Management</h3>
+        <span class="meta">7 slides</span>
+      </a>
+      <a class="card" href="Module3_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 3 · 2h</span>
+        <h3>MCP Server/Client 整合實作</h3>
+        <span class="meta">5 slides</span>
+      </a>
+      <a class="card" href="Module4_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 4 · 2.5h</span>
+        <h3>Multi-Agent 協作方法論與實作</h3>
+        <span class="meta">5 slides</span>
+      </a>
+      <a class="card" href="Module5_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 5 · 1.5h</span>
+        <h3>Guardrails 安全防護設計</h3>
+        <span class="meta">5 slides</span>
+      </a>
+      <a class="card" href="Module6_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 6 · 1.5h</span>
+        <h3>Observability 與 Evaluation</h3>
+        <span class="meta">5 slides</span>
+      </a>
+      <a class="card" href="Module7_Slides.html" target="_blank" rel="noopener">
+        <span class="m-id">Module 7 · 2h</span>
+        <h3>整合專題：Capstone</h3>
+        <span class="meta">6 slides</span>
+      </a>
+    </div>
+    <div class="note">
+      <b>投影片播放操作方式：</b>
+      <ul>
+        <li>滑鼠：點選畫面左／右側或下方 ◀／▶ 按鈕切換上一頁／下一頁</li>
+        <li>鍵盤：方向鍵／PageUp／PageDown／空白鍵 換頁，Home／End 跳到第一頁／最後一頁</li>
+        <li>觸控：手機／平板可左右滑動切換</li>
+        <li>右上角下拉選單可直接跳到指定投影片，或切換到其他模組</li>
+        <li>點選下方 ⛶ 按鈕（或按 F 鍵）可進入全螢幕播放，再點一次或按 Esc 可離開全螢幕</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  用 n8n 實現 Agentic AI System · RWD HTML 投影片索引頁 · 完整教材包請參閱根目錄 <span class="mono">README.md</span>
+</footer>
+
+</body>
+</html>
