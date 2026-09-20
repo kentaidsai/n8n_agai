@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>用 n8n 實現 Agentic AI System — Module 1：從聊天工具到 Agentic AI：n8n Agent 架構總覽（1.5 小時）｜RWD 投影片播放</title>
+<title>用 n8n 實現 Agentic AI System — Module 1：從聊天工具到 Agentic AI：n8n Agent 架構總覽（1.5 小時）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -124,7 +124,7 @@ select{font-family:'JetBrains Mono', Consolas, monospace;}
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF9585; text-transform:uppercase; letter-spacing:2px">Module 1 · 1.5 小時</p>
 <h1 style="font-size:84px; font-weight:700; line-height:1.15; color:#FAFAF9">從聊天工具到<br/>Agentic AI</h1>
 <p style="font-size:28px; color:#D9C7E8; max-width:1300px">n8n Agent 架構總覽與設計方法論</p>
-<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8">用 n8n 實現 Agentic AI System </p>
 <p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8; text-align:right">1/5</p>
 </section></div><div class="slide" id="m1-content"><section id="m1-content" style="background:#FAFAF9; color:#161616; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px; ">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF6D5A; text-transform:uppercase; letter-spacing:2px">Module 1</p>
@@ -132,7 +132,7 @@ select{font-family:'JetBrains Mono', Consolas, monospace;}
 <ul style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:23px; color:#5B5A63; line-height:1.5; padding-left:26px; margin:0"><li>不只是串接 API，而能規劃步驟、判斷何時呼叫工具</li><li>保留對話脈絡，依情境動態決定下一步行動</li><li>架構決策：任務複雜度、職責分離與成本，決定 Single 或 Multi-Agent</li></ul>
 <p style="font-size:22px; font-weight:600; margin-top:4px">n8n 中的 AI Agent 相關節點</p>
 <table style="font-family:'IBM Plex Sans', Arial, sans-serif; width:100%"><tr><th style="width:45%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">節點</th><th style="width:55%; text-align:left; padding:12px 14px; font-size:20px; color:#5B5A63; border-bottom:2px solid #161616">角色</th></tr><tr><td style="width:45%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">Chat Trigger</td><td style="width:55%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">對話入口，接收顧客訊息</td></tr><tr><td style="width:45%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">AI Agent</td><td style="width:55%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">核心推理節點，決定是否呼叫工具</td></tr><tr><td style="width:45%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">Chat Model</td><td style="width:55%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">連接 LLM（OpenAI／Anthropic 等）</td></tr><tr><td style="width:45%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">Tool（HTTP／Code／Sub-workflow）</td><td style="width:55%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">Agent 可呼叫的外部能力</td></tr><tr><td style="width:45%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">Memory</td><td style="width:55%; padding:16px 14px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:19px; color:#161616; border-bottom:1px solid #EAE6E4">保留對話脈絡與長期記憶</td></tr></table>
-<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System </p>
 <p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92; text-align:right">2/5</p>
 </section></div><div class="slide" id="m1-patterns-deep"><section id="m1-patterns-deep" style="background:#FAFAF9; color:#161616; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px; ">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF6D5A; text-transform:uppercase; letter-spacing:2px">Module 1</p>
@@ -152,8 +152,8 @@ select{font-family:'JetBrains Mono', Consolas, monospace;}
 <x-icon name="Search" style="color:#FF6D5A; width:40px; height:40px"></x-icon>
 <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; font-weight:600; color:#161616">Reflection</h3>
 <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:22px; color:#5B5A63; line-height:1.4">先產生初稿回覆<br/>自我檢查是否有遺漏或錯誤<br/>修正後才送出</p>
-</div></div><p style="font-size:22px; color:#5B5A63; margin-top:8px">14 小時版以 ReAct 為主要實作模式；Plan-and-Execute 與 Reflection 作為觀念理解，21 小時版另有專門實作練習。</p>
-<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+</div></div><p style="font-size:22px; color:#5B5A63; margin-top:8px">14 小時版以 ReAct 為主要實作模式；Plan-and-Execute 與 Reflection 作為觀念理解。</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System</p>
 <p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92; text-align:right">3/5</p>
 </section></div><div class="slide" id="m1-architecture-decision"><section id="m1-architecture-decision" style="background:#FAFAF9; color:#161616; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px; ">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF6D5A; text-transform:uppercase; letter-spacing:2px">Module 1</p>
@@ -169,7 +169,7 @@ select{font-family:'JetBrains Mono', Consolas, monospace;}
 </div>
 </div>
 <p style="font-size:22px; color:#5B5A63; margin-top:8px">本課程貫穿範例：Module 1～3 先做 Single Agent，Module 4 起拆分為 Multi-Agent。</p>
-<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92">用 n8n 實現 Agentic AI System </p>
 <p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#8A8A92; text-align:right">4/5</p>
 </section></div><div class="slide" id="m1-lab"><section id="m1-lab" style="background:#1B1030; color:#FAFAF9; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:23px; font-weight:500; color:#FF9585; text-transform:uppercase; letter-spacing:2px">Module 1 · 動手練習 LAB</p>
@@ -201,7 +201,7 @@ select{font-family:'JetBrains Mono', Consolas, monospace;}
 </div>
 </div>
 <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#FF9585; margin-top:8px">所需資料：無（僅需紙筆／白板）</p>
-<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8">用 n8n 實現 Agentic AI System · 14小時版（加深版）</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8">用 n8n 實現 Agentic AI System </p>
 <p style="position:absolute; right:128px; bottom:64px; width:150px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:20px; color:#D9C7E8; text-align:right">5/5</p>
 </section></div>
   </div>
