@@ -1,4 +1,4 @@
-# 投影片・響應式網頁播放版（RWD HTML）— 用 n8n 實現 Agentic AI System
+# 投影片　— 用 n8n 實現 Agentic AI System
 
 本資料夾收錄「用 n8n 實現 Agentic AI System」14 小時課程投影片的**響應式網頁播放版不需 PowerPoint 或 Claude 帳號即可開啟；以**投影片播放**方式呈現（一次顯示一張、可上一頁／下一頁／全螢幕），並會依螢幕寬度（手機／平板／桌機）自動縮放版面。
 
