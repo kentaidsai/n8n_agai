@@ -72,6 +72,18 @@
     font-size:13px;
     font-family:"SFMono-Regular", Consolas, "Courier New", monospace;
   }
+  .hero-actions{margin:0 0 28px;}
+  .btn-link{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--accent); color:#0F1830; font-weight:700;
+    padding:12px 22px; border-radius:100px; text-decoration:none; font-size:14px;
+    transition:background .15s;
+  }
+  .btn-link:hover{background:var(--accent-light);}
+  .btn-link .path{
+    font-family:"SFMono-Regular", Consolas, "Courier New", monospace;
+    font-weight:500; opacity:.85; font-size:13px;
+  }
   .hero-meta{
     display:flex; flex-wrap:wrap; gap:32px;
     border-top:1px solid rgba(255,255,255,0.12);
@@ -219,6 +231,9 @@
       <span class="tag">Observability</span>
       <span class="tag">Evaluation</span>
     </div>
+    <div class="hero-actions">
+      <a class="btn-link" href="https://kentaidsai.github.io/n8n_agai/slides/index.html" target="_blank" rel="noopener">📽 查看投影片 <span class="path">./slides/index.html</span></a>
+    </div>
     <div class="hero-meta">
       <div><div class="k">時數</div><div class="v">14 小時</div></div>
       <div><div class="k">模組數</div><div class="v">7 個</div></div>
@@ -331,7 +346,7 @@
 </section>
 
 <footer>
-  用 n8n 實現 Agentic AI System · 14 小時版課程總覽頁
+  用 n8n 實現 Agentic AI System · 14 小時版課程總覽頁 · <a href="https://kentaidsai.github.io/n8n_agai/slides/index.html" target="_blank" rel="noopener">投影片 ./slides/index.html</a>
 </footer>
 
 </body>
