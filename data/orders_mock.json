@@ -1,0 +1,140 @@
+{
+  "_說明": "Module 2／Module 3 練習用模擬訂單資料。可直接匯入模擬訂單 API（如用 n8n 的 Respond to Webhook + Code 節點回傳對應筆數），或作為 HTTP Request Tool / MCP Server 的假資料來源。",
+  "orders": [
+    {
+      "order_id": "A12345",
+      "customer_name": "王小明",
+      "status": "已出貨",
+      "items": [
+        { "sku": "SKU-1001", "name": "無線藍牙耳機", "qty": 1, "price": 1490 }
+      ],
+      "total_amount": 1490,
+      "order_date": "2026-09-18",
+      "eta": "2026-09-25",
+      "shipping_carrier": "黑貓宅急便",
+      "tracking_no": "TW883920011"
+    },
+    {
+      "order_id": "A12346",
+      "customer_name": "陳雅婷",
+      "status": "處理中",
+      "items": [
+        { "sku": "SKU-2002", "name": "機械式鍵盤", "qty": 1, "price": 2280 },
+        { "sku": "SKU-2003", "name": "滑鼠墊", "qty": 1, "price": 250 }
+      ],
+      "total_amount": 2530,
+      "order_date": "2026-09-19",
+      "eta": "2026-09-27",
+      "shipping_carrier": null,
+      "tracking_no": null
+    },
+    {
+      "order_id": "A12347",
+      "customer_name": "林建宏",
+      "status": "已送達",
+      "items": [
+        { "sku": "SKU-3004", "name": "行動電源 10000mAh", "qty": 2, "price": 690 }
+      ],
+      "total_amount": 1380,
+      "order_date": "2026-09-10",
+      "eta": "2026-09-15",
+      "shipping_carrier": "新竹物流",
+      "tracking_no": "TW771103322"
+    },
+    {
+      "order_id": "A12348",
+      "customer_name": "張美玲",
+      "status": "已取消",
+      "items": [
+        { "sku": "SKU-1001", "name": "無線藍牙耳機", "qty": 1, "price": 1490 }
+      ],
+      "total_amount": 1490,
+      "order_date": "2026-09-12",
+      "eta": null,
+      "shipping_carrier": null,
+      "tracking_no": null,
+      "cancel_reason": "顧客主動取消"
+    },
+    {
+      "order_id": "A12349",
+      "customer_name": "黃冠宇",
+      "status": "已出貨",
+      "items": [
+        { "sku": "SKU-4005", "name": "27吋螢幕", "qty": 1, "price": 5990 }
+      ],
+      "total_amount": 5990,
+      "order_date": "2026-09-16",
+      "eta": "2026-09-24",
+      "shipping_carrier": "黑貓宅急便",
+      "tracking_no": "TW883920099"
+    },
+    {
+      "order_id": "A12350",
+      "customer_name": "李佳蓉",
+      "status": "退貨處理中",
+      "items": [
+        { "sku": "SKU-2002", "name": "機械式鍵盤", "qty": 1, "price": 2280 }
+      ],
+      "total_amount": 2280,
+      "order_date": "2026-09-05",
+      "eta": null,
+      "shipping_carrier": null,
+      "tracking_no": null,
+      "return_reason": "商品瑕疵：按鍵無反應"
+    },
+    {
+      "order_id": "A12351",
+      "customer_name": "吳承翰",
+      "status": "已出貨",
+      "items": [
+        { "sku": "SKU-5006", "name": "無線充電盤", "qty": 3, "price": 590 }
+      ],
+      "total_amount": 1770,
+      "order_date": "2026-09-17",
+      "eta": "2026-09-23",
+      "shipping_carrier": "郵局",
+      "tracking_no": "TW991002211"
+    },
+    {
+      "order_id": "A12352",
+      "customer_name": "蔡靜怡",
+      "status": "已完成",
+      "items": [
+        { "sku": "SKU-3004", "name": "行動電源 10000mAh", "qty": 1, "price": 690 }
+      ],
+      "total_amount": 690,
+      "order_date": "2026-08-30",
+      "eta": "2026-09-04",
+      "shipping_carrier": "新竹物流",
+      "tracking_no": "TW771100011"
+    },
+    {
+      "order_id": "A12353",
+      "customer_name": "許志偉",
+      "status": "處理中",
+      "items": [
+        { "sku": "SKU-4005", "name": "27吋螢幕", "qty": 1, "price": 5990 },
+        { "sku": "SKU-2003", "name": "滑鼠墊", "qty": 1, "price": 250 }
+      ],
+      "total_amount": 6240,
+      "order_date": "2026-09-19",
+      "eta": "2026-09-28",
+      "shipping_carrier": null,
+      "tracking_no": null
+    },
+    {
+      "order_id": "A12354",
+      "customer_name": "鄭雅文",
+      "status": "已出貨",
+      "items": [
+        { "sku": "SKU-5006", "name": "無線充電盤", "qty": 1, "price": 590 }
+      ],
+      "total_amount": 590,
+      "order_date": "2026-09-15",
+      "eta": "2026-09-22",
+      "shipping_carrier": "黑貓宅急便",
+      "tracking_no": "TW883920155"
+    }
+  ],
+  "_查無資料測試": "凡不在上方 orders 清單中的訂單編號（例如 A99999）皆應視為查無此單，模擬 API／工具需回傳明確的「查無此訂單」結果，而非空陣列或例外錯誤，用於測試 Agent 是否會因此產生幻覺回答（見 練習步驟.md Module 2 步驟）。"
+}
