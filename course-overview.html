@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用 n8n 實現 Agentic AI System｜14 小時課程總覽</title>
+<style>
+  :root{
+    --dark:#16213E;
+    --dark2:#123E39;
+    --light-bg:#FAFAF7;
+    --card-bg:#FFFFFF;
+    --card-border:#E3E6E4;
+    --text-dark:#1A1A1A;
+    --text-muted:#4A5568;
+    --text-light:#FAFAF7;
+    --text-light-muted:#BFD8D5;
+    --accent:#1C8C7C;
+    --accent-light:#5FD1C4;
+    --danger:#C0574A;
+    --radius:16px;
+    --max-w:1080px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--light-bg);
+    color:var(--text-dark);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", Roboto, Helvetica, Arial, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:"SFMono-Regular", Consolas, "Courier New", monospace;
+  }
+  a{color:var(--accent);}
+  .wrap{max-width:var(--max-w); margin:0 auto; padding:0 24px;}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    background:linear-gradient(160deg, var(--dark) 0%, #0F1830 100%);
+    color:var(--text-light);
+    padding:72px 0 56px;
+  }
+  .eyebrow{
+    font-family:"SFMono-Regular", Consolas, "Courier New", monospace;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent-light);
+    margin:0 0 16px;
+  }
+  header.hero h1{
+    font-size:clamp(32px, 6vw, 52px);
+    line-height:1.15;
+    margin:0 0 16px;
+    font-weight:700;
+  }
+  header.hero .subtitle{
+    font-size:clamp(15px, 2.4vw, 19px);
+    color:var(--text-light-muted);
+    max-width:640px;
+    margin:0 0 28px;
+  }
+  .tags{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:28px;}
+  .tag{
+    background:rgba(95,209,196,0.12);
+    border:1px solid var(--accent-light);
+    color:var(--accent-light);
+    border-radius:100px;
+    padding:8px 16px;
+    font-size:13px;
+    font-family:"SFMono-Regular", Consolas, "Courier New", monospace;
+  }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:32px;
+    border-top:1px solid rgba(255,255,255,0.12);
+    padding-top:24px;
+  }
+  .hero-meta div{min-width:120px;}
+  .hero-meta .k{font-size:12px; color:var(--text-light-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;}
+  .hero-meta .v{font-size:20px; font-weight:600;}
+
+  /* ---------- Sections ---------- */
+  section{padding:56px 0;}
+  section.alt{background:#F1F3F1;}
+  h2.section-title{
+    font-size:clamp(24px, 4vw, 32px);
+    margin:0 0 8px;
+    font-weight:700;
+  }
+  p.section-lead{
+    color:var(--text-muted);
+    max-width:720px;
+    margin:0 0 32px;
+    font-size:16px;
+  }
+
+  /* Goals grid */
+  .grid{display:grid; gap:20px;}
+  .grid.cols-3{grid-template-columns:repeat(3, 1fr);}
+  .grid.cols-2{grid-template-columns:repeat(2, 1fr);}
+  @media (max-width:800px){
+    .grid.cols-3, .grid.cols-2{grid-template-columns:1fr;}
+  }
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:24px;
+  }
+  .card h3{margin:0 0 8px; font-size:18px; font-weight:600;}
+  .card p{margin:0; color:var(--text-muted); font-size:15px;}
+  .card .icon{
+    width:40px; height:40px; border-radius:10px;
+    background:rgba(28,140,124,0.1);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:14px; font-size:18px; color:var(--accent);
+  }
+
+  /* Audience list */
+  ul.audience{list-style:none; margin:0; padding:0; display:grid; gap:12px;}
+  ul.audience li{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:16px 20px;
+    font-size:15px;
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  ul.audience li::before{content:"•"; color:var(--accent); font-weight:700; flex-shrink:0;}
+
+  /* Modules table */
+  .modules{display:flex; flex-direction:column; gap:12px;}
+  .module-row{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:18px 22px;
+    display:grid;
+    grid-template-columns:90px 1fr 70px;
+    gap:16px;
+    align-items:center;
+  }
+  .module-row .m-id{font-family:"SFMono-Regular", Consolas, monospace; color:var(--accent); font-weight:600; font-size:14px;}
+  .module-row .m-title{font-size:15px;}
+  .module-row .m-hours{font-size:14px; color:var(--text-muted); text-align:right; font-family:"SFMono-Regular", Consolas, monospace;}
+  .module-row.total{background:var(--dark); border-color:var(--dark);}
+  .module-row.total .m-title, .module-row.total .m-hours{color:var(--text-light); font-weight:700;}
+  .module-row.total .m-id{color:var(--accent-light);}
+  @media (max-width:600px){
+    .module-row{grid-template-columns:1fr; text-align:left;}
+    .module-row .m-hours{text-align:left;}
+  }
+
+  /* Skills list */
+  ol.skills{
+    columns:2;
+    column-gap:40px;
+    padding-left:22px;
+    margin:0;
+    font-size:15px;
+    color:var(--text-dark);
+  }
+  ol.skills li{margin-bottom:14px; break-inside:avoid;}
+  @media (max-width:700px){
+    ol.skills{columns:1;}
+  }
+
+  /* Prep steps */
+  .prep{display:flex; flex-direction:column; gap:14px;}
+  .prep-item{
+    display:flex; gap:16px; align-items:flex-start;
+    background:var(--card-bg); border:1px solid var(--card-border);
+    border-radius:12px; padding:18px 22px;
+  }
+  .prep-item .num{
+    width:32px; height:32px; min-width:32px; border-radius:50%;
+    background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"SFMono-Regular", Consolas, monospace; font-size:14px; font-weight:700;
+  }
+  .prep-item p{margin:0; font-size:15px; color:var(--text-muted);}
+  .prep-item b{color:var(--text-dark);}
+
+  /* Example diagram */
+  .flow{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:28px;
+  }
+  .flow .box{
+    flex:1; min-width:140px; text-align:center; padding:18px 14px; border-radius:12px;
+    background:var(--light-bg); border:1px solid var(--card-border); font-size:14px; font-weight:600;
+  }
+  .flow .box.dark{background:var(--dark); color:var(--text-light); border-color:var(--dark);}
+  .flow .arrow{color:var(--accent); font-size:22px; font-weight:700;}
+  .flow .subboxes{display:flex; flex-direction:column; gap:8px; flex:1.3; min-width:180px;}
+  .flow .subboxes .box{font-weight:500; font-size:13px; padding:10px 14px;}
+
+  footer{
+    padding:40px 0 60px;
+    text-align:center;
+    color:var(--text-muted);
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Agentic AI Workshop</p>
+    <h1>用 n8n 實現 Agentic AI System</h1>
+    <p class="subtitle">Building Agentic AI Systems with n8n — 從 Single Agent 到 Multi-Agent 架構的實戰工作坊，14 小時完整整合 MCP、Guardrails、Observability 與 Evaluation。</p>
+    <div class="tags">
+      <span class="tag">Single → Multi-Agent</span>
+      <span class="tag">MCP Server/Client</span>
+      <span class="tag">Guardrails</span>
+      <span class="tag">Observability</span>
+      <span class="tag">Evaluation</span>
+    </div>
+    <div class="hero-meta">
+      <div><div class="k">時數</div><div class="v">14 小時</div></div>
+      <div><div class="k">模組數</div><div class="v">7 個</div></div>
+      <div><div class="k">建議天數</div><div class="v">2 天</div></div>
+      <div><div class="k">貫穿範例</div><div class="v" style="font-size:15px; font-weight:500;">智慧客服 Agent</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="goals">
+  <div class="wrap">
+    <h2 class="section-title">課程目標</h2>
+    <p class="section-lead">本課程是一堂以 n8n 為核心的實戰 LAB，目標是讓學員把 AI Agent 從「單一聊天機器人」升級為能自主呼叫工具、串接標準化協定（MCP）、多代理人協作、具備安全防護與可觀測性的企業級 Agentic AI 系統。</p>
+    <div class="grid cols-3">
+      <div class="card"><div class="icon">✓</div><h3>架構判斷</h3><p>判斷情境該用 Single 或 Multi-Agent，並說明理由</p></div>
+      <div class="card"><div class="icon">🔧</div><h3>工具與記憶</h3><p>為 Agent 掛載工具、設計短期／長期記憶</p></div>
+      <div class="card"><div class="icon">🔗</div><h3>MCP 整合</h3><p>建立並串接 MCP Server／Client，工具跨專案共用</p></div>
+      <div class="card"><div class="icon">👥</div><h3>多代理協作</h3><p>設計並實作 Router、Orchestrator-Worker 等協作系統</p></div>
+      <div class="card"><div class="icon">🔒</div><h3>安全防護</h3><p>為系統加上 Guardrails，降低誤用與風險</p></div>
+      <div class="card"><div class="icon">📊</div><h3>監控與評估</h3><p>建立 Observability 與 Evaluation，持續改善品質</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="example">
+  <div class="wrap">
+    <h2 class="section-title">貫穿範例</h2>
+    <p class="section-lead">全通路智慧客服與工單處理 Agent System — 全程以同一套系統為主線，從只會回答問題的 Single Agent，逐步疊加工具、記憶、MCP、多代理協作、安全防護與監控機制。</p>
+    <div class="flow">
+      <div class="box">顧客訊息</div>
+      <div class="arrow">→</div>
+      <div class="box dark">Router Agent</div>
+      <div class="arrow">→</div>
+      <div class="subboxes">
+        <div class="box">訂單 Agent（查詢／退換貨）</div>
+        <div class="box">退款 Agent（金額守門）</div>
+        <div class="box">技術支援 Agent（轉真人）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="audience">
+  <div class="wrap">
+    <h2 class="section-title">適合對象</h2>
+    <ul class="audience">
+      <li>已有 n8n 基本操作經驗，想進一步打造 AI Agent 自動化流程的自動化顧問與工程師</li>
+      <li>想將公司內部客服、工單、行政流程升級為 Agentic AI 系統的系統整合工程師</li>
+      <li>企業主管、PM、顧問，想評估 Agentic AI 導入可行性並建立可複製的架構藍圖</li>
+      <li>技術型專案經理，需要規劃 AI Agent 專案的架構、風險與驗收標準</li>
+      <li>已會使用 ChatGPT/Claude，想進一步學會 Multi-Agent、MCP、Guardrails 與 Evaluation 的學員</li>
+      <li>培訓經理與企業內訓規劃者，需設計 Agentic AI 相關課程</li>
+      <li>想導入標準化工具協定（MCP），讓多個 AI 專案共用工具的開發團隊</li>
+      <li>RPA/流程自動化工程師，想將既有流程升級為具備推理與工具呼叫能力的 Agent</li>
+    </ul>
+  </div>
+</section>
+
+<section class="alt" id="syllabus">
+  <div class="wrap">
+    <h2 class="section-title">課程大綱</h2>
+    <p class="section-lead">7 個模組，14 小時，一個貫穿範例。</p>
+    <div class="modules">
+      <div class="module-row"><span class="m-id">Module 1</span><span class="m-title">Agentic AI 基礎與架構設計方法論</span><span class="m-hours">1.5h</span></div>
+      <div class="module-row"><span class="m-id">Module 2</span><span class="m-title">Single Agent 實作：Tool Invocation 與 Memory Management</span><span class="m-hours">3h</span></div>
+      <div class="module-row"><span class="m-id">Module 3</span><span class="m-title">MCP Server/Client 整合</span><span class="m-hours">2h</span></div>
+      <div class="module-row"><span class="m-id">Module 4</span><span class="m-title">Multi-Agent 協作方法論與實作</span><span class="m-hours">2.5h</span></div>
+      <div class="module-row"><span class="m-id">Module 5</span><span class="m-title">Guardrails 安全防護設計</span><span class="m-hours">1.5h</span></div>
+      <div class="module-row"><span class="m-id">Module 6</span><span class="m-title">Observability 與 Evaluation</span><span class="m-hours">1.5h</span></div>
+      <div class="module-row"><span class="m-id">Module 7</span><span class="m-title">Architecture Design 與 Capstone 專題</span><span class="m-hours">2h</span></div>
+      <div class="module-row total"><span class="m-id">總計</span><span class="m-title"></span><span class="m-hours">14h</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <h2 class="section-title">學會技能</h2>
+    <ol class="skills">
+      <li>能說明 Agentic AI 與傳統 Workflow 自動化的差異，並解釋 ReAct、Plan-and-Execute、Reflection 等常見設計模式</li>
+      <li>能判斷特定業務情境該用 Single Agent 或 Multi-Agent 架構，並說明理由</li>
+      <li>能在 n8n 中為 Agent 掛載自訂工具，包含 HTTP Request Tool、Code Tool 與 Sub-workflow Tool</li>
+      <li>能設計適當的短期與長期記憶機制，讓 Agent 記住對話脈絡與使用者偏好</li>
+      <li>能說明 MCP 解決的問題，並在 n8n 中以 MCP Client 呼叫既有工具</li>
+      <li>能將既有工具包裝為可跨專案共用的 MCP Server 雛形</li>
+      <li>能說明 Router、Orchestrator-Worker、Hierarchical、Handoff 等 Multi-Agent 協作模式的差異</li>
+      <li>能在 n8n 中實作具備路由與協調能力的多代理人協作系統</li>
+      <li>能為 Agent 系統設計輸入與輸出 Guardrails，降低 Prompt Injection 與幻覺風險</li>
+      <li>能設計業務規則守門（如金額上限）與 Human-in-the-loop 升級機制</li>
+      <li>能為 Agent 系統建立執行紀錄與追蹤儀表板，監控呼叫鏈與 Token 成本</li>
+      <li>能建立黃金測試資料集並設計自動化 Evaluation Workflow</li>
+      <li>能評估不同架構設計在 Scalability、Cost、Latency 上的取捨</li>
+      <li>能整合前述所有能力，產出一套完整的 Agentic AI 系統架構設計文件</li>
+      <li>能將此課程的方法論與 workflow 範本，應用於客服以外的業務情境（如內部 IT 支援、供應商溝通、行政流程）</li>
+    </ol>
+  </div>
+</section>
+
+<section class="alt" id="prep">
+  <div class="wrap">
+    <h2 class="section-title">課前準備</h2>
+    <p class="section-lead">請於上課前先完成下列帳號申請與軟體安裝，以利課堂 LAB 操作。</p>
+    <div class="prep">
+      <div class="prep-item"><div class="num">1</div><p><b>n8n 環境：</b>建議安裝 Docker Desktop 並準備一組可用的 n8n（self-hosted 或 n8n Cloud 帳號皆可），確保能建立與執行 workflow。</p></div>
+      <div class="prep-item"><div class="num">2</div><p><b>LLM API Key：</b>至 OpenAI 或 Anthropic（或其他相容供應商）申請 API Key，課堂 LAB 將用於呼叫語言模型。</p></div>
+      <div class="prep-item"><div class="num">3</div><p><b>資料庫（選用）：</b>若可行，安裝 Docker 版 Postgres 或 Redis，供 Memory Management 單元練習使用；未安裝者可於課堂中臨時建置。</p></div>
+      <div class="prep-item"><div class="num">4</div><p><b>上課環境：</b>不限作業系統，僅需能執行 Docker 與瀏覽器；課程設計以 n8n 雲端或地端實例為核心，可依企業內部環境調整。</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  用 n8n 實現 Agentic AI System · 14 小時版課程總覽頁
+</footer>
+
+</body>
+</html>

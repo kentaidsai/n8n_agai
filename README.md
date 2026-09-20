@@ -86,4 +86,3 @@
 
 ---
 
-*用 n8n 實現 Agentic AI System · 14 小時版課程總覽頁（Markdown 版，內容與 `course-overview.html` 相同）；完整教材包請參閱 `README.md`。*
